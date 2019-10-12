@@ -26,6 +26,7 @@ class Graph:
         # and print it
         visited[v] = True
         print(v, end=' ')
+        #print(self.graph[v])
 
         # Recur for all the vertices
         # adjacent to this vertex
@@ -46,59 +47,41 @@ class Graph:
         self.DFSUtil(v, visited)
 
     # Driver code
+g = Graph()
 dic = {}
 dicValues = {}
 dicKeys = {}
-index = 12
-sondanIndex = -3
-diziValues = []
-diziKeys = []
+index = 0
+indexOfValuesDic = 0
+sondanIndexOfEdge = 3
+sondanIndexOfCost = -3
 
-file = open("graph.txt","r")
+file = open("graph.txt", "r")
 line = file.readline()
 while line:
-
-    #values = line.split(":",1)
-
-    #dic[values[0]] = values[1]
-    #print(line[-3])
-    print(sondanIndex)
-
-    while line[sondanIndex]:
-        print(line[sondanIndex])
+    vertex = str(line[0])
+    dicKeys[vertex] = index
+    print(vertex)
+    while line[sondanIndexOfCost]:
         try:
-            diziValues.append(int(line[sondanIndex]))
+            edge = str(line[sondanIndexOfEdge])
+            dicValues[edge] = indexOfValuesDic
+            costOfEdge = int(line[sondanIndexOfCost])
+            if costOfEdge > 0:
+                g.addEdge(index, dicValues[edge])
+                print(costOfEdge)
+            indexOfValuesDic += 1
         except:
-            diziKeys.append(str(line[sondanIndex]))
+            index += 1
             break
-        sondanIndex -= 5
-    sondanIndex = -3
+        sondanIndexOfEdge += 5
+        sondanIndexOfCost -= 5
+    indexOfValuesDic = 0
+    sondanIndexOfEdge = 3
+    sondanIndexOfCost = -3
     line = file.readline()
-
-    #Keys = str(dic.keys())
-    #print(Keys[index])
-    #keyOfKeys = Keys.split(":")
-    #dicKeys[keyOfKeys[0]] = keyOfKeys[1]
-
-    #Values = str(dic.values())
-    #Values.replace('}', '", "')
-    #Values.rstrip()
-    #print(Values[14:-6])
-
-    #index += 6
 file.close()
-
-print(diziKeys)
-print(diziValues)
+print(dicValues)
+g.DFS(dicKeys["A"])
 # Create a graph given
 # in the above diagram
-g = Graph()
-g.addEdge(0, 1)
-g.addEdge(0, 2)
-g.addEdge(1, 2)
-g.addEdge(2, 0)
-g.addEdge(2, 3)
-g.addEdge(3, 3)
-
-print("Following is DFS from (starting from vertex 2)")
-g.DFS(2)
