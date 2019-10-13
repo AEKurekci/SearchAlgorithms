@@ -20,19 +20,18 @@ class Graph:
 
         # A function used by DFS
 
-    def DFSUtil(self, v, visited):
+    def DFSUtil(self, v, visited, path):
 
         # Mark the current node as visited
         # and print it
         visited[v] = True
-        print(v, end=' ')
-        #print(self.graph[v])
+        path.append(v)
 
         # Recur for all the vertices
         # adjacent to this vertex
         for i in self.graph[v]:
             if visited[i] == False:
-                self.DFSUtil(i, visited)
+                self.DFSUtil(i, visited, path)
 
                 # The function to do DFS traversal. It uses
 
@@ -41,10 +40,11 @@ class Graph:
 
         # Mark all the vertices as not visited
         visited = [False] * (len(self.graph))
-
+        path=[]
         # Call the recursive helper function
         # to print DFS traversal
-        self.DFSUtil(v, visited)
+        self.DFSUtil(v, visited,path)
+        return path
 
     # Driver code
 g = Graph()
@@ -53,35 +53,46 @@ dicValues = {}
 dicKeys = {}
 index = 0
 indexOfValuesDic = 0
-sondanIndexOfEdge = 3
-sondanIndexOfCost = -3
-
+fromLastIndexOfEdge = -5
+fromLastIndexOfCost = -3
+fromFirstIndexOfCost = 3
 file = open("graph.txt", "r")
 line = file.readline()
 while line:
     vertex = str(line[0])
     dicKeys[vertex] = index
-    print(vertex)
-    while line[sondanIndexOfCost]:
+    while line[fromLastIndexOfCost]:
         try:
-            edge = str(line[sondanIndexOfEdge])
-            dicValues[edge] = indexOfValuesDic
-            costOfEdge = int(line[sondanIndexOfCost])
+            costOfEdge = int(line[fromLastIndexOfCost])
+            edgeForDic = str(line[fromFirstIndexOfCost])
+            if edgeForDic not in dicValues:
+                dicValues[edgeForDic] = indexOfValuesDic
+                indexOfValuesDic += 1
             if costOfEdge > 0:
+                edge = str(line[fromLastIndexOfEdge])
                 g.addEdge(index, dicValues[edge])
-                print(costOfEdge)
-            indexOfValuesDic += 1
         except:
             index += 1
             break
-        sondanIndexOfEdge += 5
-        sondanIndexOfCost -= 5
+        fromLastIndexOfEdge -= 5
+        fromLastIndexOfCost -= 5
+        fromFirstIndexOfCost += 5
     indexOfValuesDic = 0
-    sondanIndexOfEdge = 3
-    sondanIndexOfCost = -3
+    fromLastIndexOfEdge = -5
+    fromLastIndexOfCost = -3
+    fromFirstIndexOfCost = 3
     line = file.readline()
 file.close()
-print(dicValues)
-g.DFS(dicKeys["A"])
-# Create a graph given
-# in the above diagram
+counter = 0
+pathOut = g.DFS(dicKeys["D"])
+destination = "A"
+beginning = "D"
+result = ""
+for i in pathOut:
+    if beginning == list(dicValues.keys())[list(dicValues.values()).index(i)]:
+        result = "DFS : " + list(dicValues.keys())[list(dicValues.values()).index(i)] + ' - '
+    elif destination != list(dicValues.keys())[list(dicValues.values()).index(i)]:
+        result += list(dicValues.keys())[list(dicValues.values()).index(i)] + ' - '
+    else:
+        result += list(dicValues.keys())[list(dicValues.values()).index(i)]
+print(result)
