@@ -6,7 +6,7 @@ import sys
 
 # This class represents a directed graph using
 # adjacency list representation
-class Graph:
+class GraphDepthFirstSearch:
 
     # Constructor
     def __init__(self):
@@ -47,8 +47,60 @@ class Graph:
         self.DFSUtil(v, visited,path)
         return path
 
+    # This class represents a directed graph
+    # using adjacency list representation
+
+
+class GraphBreathFirstSearch:
+
+        # Constructor
+        def __init__(self):
+
+            # default dictionary to store graph
+            self.graph = defaultdict(list)
+
+            # function to add an edge to graph
+
+        def addEdge(self, u, v):
+            self.graph[u].append(v)
+
+            # Function to print a BFS of graph
+
+        def BFS(self, s):
+
+            # Mark all the vertices as not visited
+            visited = [False] * (len(self.graph))
+
+            # Create a queue for BFS
+            queue = []
+            pathOfBFS = []
+
+            # Mark the source node as
+            # visited and enqueue it
+            queue.append(s)
+            visited[s] = True
+
+            while queue:
+
+                # Dequeue a vertex from
+                # queue and print it
+                s = queue.pop(0)
+                #print(s, end=" ")
+                pathOfBFS.append(s)
+
+                # Get all adjacent vertices of the
+                # dequeued vertex s. If a adjacent
+                # has not been visited, then mark it
+                # visited and enqueue it
+                for i in self.graph[s]:
+                    if visited[i] == False:
+                        queue.append(i)
+                        visited[i] = True
+            return pathOfBFS
+
     # Driver code
-g = Graph()
+graphDFS = GraphDepthFirstSearch()
+graphBFS = GraphBreathFirstSearch()
 dic = {}
 dicValues = {}
 dicKeys = {}
@@ -72,7 +124,8 @@ while line:
                 indexOfValuesDic += 1
             if costOfEdge > 0:
                 edge = str(line[fromLastIndexOfEdge])
-                g.addEdge(index, dicValues[edge])
+                graphDFS.addEdge(index, dicValues[edge])
+                graphBFS.addEdge(index, dicValues[edge])
         except:
             index += 1
             break
@@ -85,18 +138,33 @@ while line:
     fromFirstIndexOfCost = 3
     line = file.readline()
 file.close()
+
 startState = input("Please enter the start state : ")
 goalState = input("Please enter the goal state : ")
 startState = startState.upper()
 goalState = goalState.upper()
-pathOut = g.DFS(dicKeys[startState])
-result = ""
-for i in pathOut:
-    if startState == list(dicValues.keys())[list(dicValues.values()).index(i)]:
-        result = "DFS : " + list(dicValues.keys())[list(dicValues.values()).index(i)] + ' - '
-    elif goalState != list(dicValues.keys())[list(dicValues.values()).index(i)]:
-        result += list(dicValues.keys())[list(dicValues.values()).index(i)] + ' - '
+pathOfDFS = graphDFS.DFS(dicKeys[startState])
+pathOfBFS = graphBFS.BFS(dicKeys[startState])
+resultOfDFS = ""
+resultOfBFS = ""
+
+for iBFS in pathOfBFS:
+    if startState == list(dicValues.keys())[list(dicValues.values()).index(iBFS)]:
+        resultOfBFS = "BFS : " + list(dicValues.keys())[list(dicValues.values()).index(iBFS)] + ' - '
+    elif goalState != list(dicValues.keys())[list(dicValues.values()).index(iBFS)]:
+        resultOfBFS += list(dicValues.keys())[list(dicValues.values()).index(iBFS)] + ' - '
     else:
-        result += list(dicValues.keys())[list(dicValues.values()).index(i)]
+        resultOfBFS += list(dicValues.keys())[list(dicValues.values()).index(iBFS)]
         break
-print(result)
+
+print(resultOfBFS)
+
+for iDFS in pathOfDFS:
+    if startState == list(dicValues.keys())[list(dicValues.values()).index(iDFS)]:
+        resultOfDFS = "DFS : " + list(dicValues.keys())[list(dicValues.values()).index(iDFS)] + ' - '
+    elif goalState != list(dicValues.keys())[list(dicValues.values()).index(iDFS)]:
+        resultOfDFS += list(dicValues.keys())[list(dicValues.values()).index(iDFS)] + ' - '
+    else:
+        resultOfDFS += list(dicValues.keys())[list(dicValues.values()).index(iDFS)]
+        break
+print(resultOfDFS)
