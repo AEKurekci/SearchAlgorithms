@@ -1,6 +1,7 @@
 # Python3 program to print DFS traversal
 # from a given given graph
 from collections import defaultdict
+import sys
 
 
 # This class represents a directed graph using
@@ -56,7 +57,8 @@ indexOfValuesDic = 0
 fromLastIndexOfEdge = -5
 fromLastIndexOfCost = -3
 fromFirstIndexOfCost = 3
-file = open("graph.txt", "r")
+fileName = sys.argv[1]
+file = open(fileName, "r")
 line = file.readline()
 while line:
     vertex = str(line[0])
@@ -83,16 +85,18 @@ while line:
     fromFirstIndexOfCost = 3
     line = file.readline()
 file.close()
-counter = 0
-pathOut = g.DFS(dicKeys["D"])
-destination = "A"
-beginning = "D"
+startState = input("Please enter the start state : ")
+goalState = input("Please enter the goal state : ")
+startState = startState.upper()
+goalState = goalState.upper()
+pathOut = g.DFS(dicKeys[startState])
 result = ""
 for i in pathOut:
-    if beginning == list(dicValues.keys())[list(dicValues.values()).index(i)]:
+    if startState == list(dicValues.keys())[list(dicValues.values()).index(i)]:
         result = "DFS : " + list(dicValues.keys())[list(dicValues.values()).index(i)] + ' - '
-    elif destination != list(dicValues.keys())[list(dicValues.values()).index(i)]:
+    elif goalState != list(dicValues.keys())[list(dicValues.values()).index(i)]:
         result += list(dicValues.keys())[list(dicValues.values()).index(i)] + ' - '
     else:
         result += list(dicValues.keys())[list(dicValues.values()).index(i)]
+        break
 print(result)
