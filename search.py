@@ -41,26 +41,59 @@ class GraphDepthFirstSearch:
 
         # Mark all the vertices as not visited
         visited = [False] * (len(self.graph))
-        path=[]
+        path = []
         # Call the recursive helper function
         # to print DFS traversal
-        self.DFSUtil(v, visited,path)
+        self.DFSUtil(v, visited, path)
         return path
 
     # This class represents a directed graph
     # using adjacency list representation
 
+class GraphUniformCostSearch:
+    dictionaryOfCost = {}
+    arrayOfTheDic = []
+    record = 1
+    def __init__(self):
+        self.graph = defaultdict(list)
+
+    def addEdge(self, u, v, cost):
+        if u == self.record:
+            self.arrayOfTheDic.append(self.dictionaryOfCost)
+            self.record += 1
+            self.dictionaryOfCost.clear()
+        self.graph[u].append(v)
+        self.dictionaryOfCost[v] = cost#flag
+        #self.dictTheDic[u] = self.dictionaryOfCost
+        print(self.arrayOfTheDic)
+
+    def UCS(self, f):
+        visited = [False] * (len(self.graph))
+
+        queue = []
+        pathOfUCS = []
+
+        #print(self.dictionaryOfCost)
+        queue.append(f)
+        visited[f] = True
+
+        while queue:
+            f = queue.pop(0)
+            for i in self.graph[f]:
+                if visited[i] == False:
+                    queue.append(i)
+                    #pathOfUCS.append(self.arrayOfTheDic)
+                    visited[i] = True
+        print(self.dictTheDic)
+        return pathOfUCS
 
 class GraphBreathFirstSearch:
 
         # Constructor
         def __init__(self):
-
             # default dictionary to store graph
             self.graph = defaultdict(list)
-
             # function to add an edge to graph
-
         def addEdge(self, u, v):
             self.graph[u].append(v)
 
@@ -83,7 +116,6 @@ class GraphBreathFirstSearch:
             while queue:
 
                 # Dequeue a vertex from
-                # queue and print it
                 s = queue.pop(0)
                 #print(s, end=" ")
                 pathOfBFS.append(s)
@@ -101,10 +133,11 @@ class GraphBreathFirstSearch:
     # Driver code
 graphDFS = GraphDepthFirstSearch()
 graphBFS = GraphBreathFirstSearch()
+graphUCS = GraphUniformCostSearch()
 dic = {}
 dicValues = {}
 dicKeys = {}
-index = 0
+indexOfRow = 0
 indexOfValuesDic = 0
 fromLastIndexOfEdge = -5
 fromLastIndexOfCost = -3
@@ -114,7 +147,7 @@ file = open(fileName, "r")
 line = file.readline()
 while line:
     vertex = str(line[0])
-    dicKeys[vertex] = index
+    dicKeys[vertex] = indexOfRow
     while line[fromLastIndexOfCost]:
         try:
             costOfEdge = int(line[fromLastIndexOfCost])
@@ -124,10 +157,11 @@ while line:
                 indexOfValuesDic += 1
             if costOfEdge > 0:
                 edge = str(line[fromLastIndexOfEdge])
-                graphDFS.addEdge(index, dicValues[edge])
-                graphBFS.addEdge(index, dicValues[edge])
+                graphDFS.addEdge(indexOfRow, dicValues[edge])
+                graphBFS.addEdge(indexOfRow, dicValues[edge])
+                graphUCS.addEdge(indexOfRow, dicValues[edge], costOfEdge)
         except:
-            index += 1
+            indexOfRow += 1
             break
         fromLastIndexOfEdge -= 5
         fromLastIndexOfCost -= 5
@@ -145,6 +179,7 @@ startState = startState.upper()
 goalState = goalState.upper()
 pathOfDFS = graphDFS.DFS(dicKeys[startState])
 pathOfBFS = graphBFS.BFS(dicKeys[startState])
+pathOfUCS = graphUCS.UCS(dicKeys[startState])
 resultOfDFS = ""
 resultOfBFS = ""
 
