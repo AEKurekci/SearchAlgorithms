@@ -2,6 +2,7 @@
 # from a given given graph
 from collections import defaultdict
 import sys
+import copy
 
 
 # This class represents a directed graph using
@@ -52,20 +53,20 @@ class GraphDepthFirstSearch:
 
 class GraphUniformCostSearch:
     dictionaryOfCost = {}
-    arrayOfTheDic = []
+    dictOfTheDic = {}
     record = 1
     def __init__(self):
         self.graph = defaultdict(list)
 
-    def addEdge(self, u, v, cost):
+    def addEdge(self, u, v, cost, lastU):
         if u == self.record:
-            self.arrayOfTheDic.append(self.dictionaryOfCost)
+            self.dictOfTheDic[u - 1] = copy.deepcopy(self.dictionaryOfCost)
             self.record += 1
             self.dictionaryOfCost.clear()
         self.graph[u].append(v)
-        self.dictionaryOfCost[v] = cost#flag
-        #self.dictTheDic[u] = self.dictionaryOfCost
-        print(self.arrayOfTheDic)
+        self.dictionaryOfCost[v] = cost
+        if u == lastU:
+            self.dictOfTheDic[u] = copy.deepcopy(self.dictionaryOfCost)
 
     def UCS(self, f):
         visited = [False] * (len(self.graph))
@@ -84,7 +85,7 @@ class GraphUniformCostSearch:
                     queue.append(i)
                     #pathOfUCS.append(self.arrayOfTheDic)
                     visited[i] = True
-        print(self.dictTheDic)
+        print(self.dictOfTheDic)
         return pathOfUCS
 
 class GraphBreathFirstSearch:
@@ -138,10 +139,11 @@ dic = {}
 dicValues = {}
 dicKeys = {}
 indexOfRow = 0
+lastU = 0
 indexOfValuesDic = 0
 fromLastIndexOfEdge = -5
 fromLastIndexOfCost = -3
-fromFirstIndexOfCost = 3
+fromFirstIndexOfEdge = 3
 fileName = sys.argv[1]
 file = open(fileName, "r")
 line = file.readline()
@@ -151,7 +153,7 @@ while line:
     while line[fromLastIndexOfCost]:
         try:
             costOfEdge = int(line[fromLastIndexOfCost])
-            edgeForDic = str(line[fromFirstIndexOfCost])
+            edgeForDic = str(line[fromFirstIndexOfEdge])
             if edgeForDic not in dicValues:
                 dicValues[edgeForDic] = indexOfValuesDic
                 indexOfValuesDic += 1
@@ -159,17 +161,18 @@ while line:
                 edge = str(line[fromLastIndexOfEdge])
                 graphDFS.addEdge(indexOfRow, dicValues[edge])
                 graphBFS.addEdge(indexOfRow, dicValues[edge])
-                graphUCS.addEdge(indexOfRow, dicValues[edge], costOfEdge)
+                graphUCS.addEdge(indexOfRow, dicValues[edge], costOfEdge, lastU)
         except:
             indexOfRow += 1
             break
         fromLastIndexOfEdge -= 5
         fromLastIndexOfCost -= 5
-        fromFirstIndexOfCost += 5
+        fromFirstIndexOfEdge += 5
+    lastU = ((fromFirstIndexOfEdge - 3) // 5) - 1 # for determine last index border
     indexOfValuesDic = 0
     fromLastIndexOfEdge = -5
     fromLastIndexOfCost = -3
-    fromFirstIndexOfCost = 3
+    fromFirstIndexOfEdge = 3
     line = file.readline()
 file.close()
 
