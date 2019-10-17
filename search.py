@@ -68,25 +68,43 @@ class GraphUniformCostSearch:
         if u == lastU:
             self.dictOfTheDic[u] = copy.deepcopy(self.dictionaryOfCost)
 
-    def UCS(self, f):
+    def UCS(self, source, destination):
         visited = [False] * (len(self.graph))
 
-        queue = []
-        pathOfUCS = []
+        queue = {}
+        path = []
 
-        #print(self.dictionaryOfCost)
-        queue.append(f)
-        visited[f] = True
-
+        queue[source] = source
+        visited[source] = True
+        shortestEdge = source
+        path.append(shortestEdge)
         while queue:
-            f = queue.pop(0)
-            for i in self.graph[f]:
+            source = queue[shortestEdge]
+            queue.clear()
+
+            print("for Bitti")
+            for i in self.graph[source]:
+                print("İ = ", i)
                 if visited[i] == False:
-                    queue.append(i)
-                    #pathOfUCS.append(self.arrayOfTheDic)
-                    visited[i] = True
-        print(self.dictOfTheDic)
-        return pathOfUCS
+                    queue[i] = i
+            print("Queue = ", queue)
+            dictOfPathOptions = self.dictOfTheDic[source]
+            shortest = 10000
+            for i in dictOfPathOptions:
+                if dictOfPathOptions[i] < shortest and visited[i] == False:
+                    shortest = dictOfPathOptions[i]
+                    shortestEdge = i
+                if i == destination:
+                    shortestEdge = i
+                    path.append(shortestEdge)
+                    return path
+            visited[shortestEdge] = True
+            print("Dictionary= ", dictOfPathOptions)
+            print(shortest)
+            print("ShortestEdge ", shortestEdge)
+            path.append(shortestEdge)
+            if shortestEdge == destination:
+                return path
 
 class GraphBreathFirstSearch:
 
@@ -182,9 +200,10 @@ startState = startState.upper()
 goalState = goalState.upper()
 pathOfDFS = graphDFS.DFS(dicKeys[startState])
 pathOfBFS = graphBFS.BFS(dicKeys[startState])
-pathOfUCS = graphUCS.UCS(dicKeys[startState])
+pathOfUCS = graphUCS.UCS(dicKeys[startState], dicKeys[goalState])
 resultOfDFS = ""
 resultOfBFS = ""
+resultOfUCS = ""
 
 for iBFS in pathOfBFS:
     if startState == list(dicValues.keys())[list(dicValues.values()).index(iBFS)]:
@@ -206,3 +225,13 @@ for iDFS in pathOfDFS:
         resultOfDFS += list(dicValues.keys())[list(dicValues.values()).index(iDFS)]
         break
 print(resultOfDFS)
+
+for iUCS in pathOfUCS:
+    if startState == list(dicValues.keys())[list(dicValues.values()).index(iUCS)]:
+        resultOfUCS = "UCS : " + list(dicValues.keys())[list(dicValues.values()).index(iUCS)] + ' - '
+    elif goalState != list(dicValues.keys())[list(dicValues.values()).index(iUCS)]:
+        resultOfUCS += list(dicValues.keys())[list(dicValues.values()).index(iUCS)] + ' - '
+    else:
+        resultOfUCS += list(dicValues.keys())[list(dicValues.values()).index(iUCS)]
+        break
+print(resultOfUCS)
