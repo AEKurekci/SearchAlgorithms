@@ -82,12 +82,9 @@ class GraphUniformCostSearch:
             source = queue[shortestEdge]
             queue.clear()
 
-            print("for Bitti")
             for i in self.graph[source]:
-                print("İ = ", i)
                 if visited[i] == False:
                     queue[i] = i
-            print("Queue = ", queue)
             dictOfPathOptions = self.dictOfTheDic[source]
             shortest = 10000
             for i in dictOfPathOptions:
@@ -99,9 +96,6 @@ class GraphUniformCostSearch:
                     path.append(shortestEdge)
                     return path
             visited[shortestEdge] = True
-            print("Dictionary= ", dictOfPathOptions)
-            print(shortest)
-            print("ShortestEdge ", shortestEdge)
             path.append(shortestEdge)
             if shortestEdge == destination:
                 return path
@@ -153,6 +147,7 @@ class GraphBreathFirstSearch:
 graphDFS = GraphDepthFirstSearch()
 graphBFS = GraphBreathFirstSearch()
 graphUCS = GraphUniformCostSearch()
+fileIsExist = False
 dic = {}
 dicValues = {}
 dicKeys = {}
@@ -162,76 +157,83 @@ indexOfValuesDic = 0
 fromLastIndexOfEdge = -5
 fromLastIndexOfCost = -3
 fromFirstIndexOfEdge = 3
-fileName = sys.argv[1]
-file = open(fileName, "r")
-line = file.readline()
-while line:
-    vertex = str(line[0])
-    dicKeys[vertex] = indexOfRow
-    while line[fromLastIndexOfCost]:
-        try:
-            costOfEdge = int(line[fromLastIndexOfCost])
-            edgeForDic = str(line[fromFirstIndexOfEdge])
-            if edgeForDic not in dicValues:
-                dicValues[edgeForDic] = indexOfValuesDic
-                indexOfValuesDic += 1
-            if costOfEdge > 0:
-                edge = str(line[fromLastIndexOfEdge])
-                graphDFS.addEdge(indexOfRow, dicValues[edge])
-                graphBFS.addEdge(indexOfRow, dicValues[edge])
-                graphUCS.addEdge(indexOfRow, dicValues[edge], costOfEdge, lastU)
-        except:
-            indexOfRow += 1
-            break
-        fromLastIndexOfEdge -= 5
-        fromLastIndexOfCost -= 5
-        fromFirstIndexOfEdge += 5
-    lastU = ((fromFirstIndexOfEdge - 3) // 5) - 1 # for determine last index border
-    indexOfValuesDic = 0
-    fromLastIndexOfEdge = -5
-    fromLastIndexOfCost = -3
-    fromFirstIndexOfEdge = 3
+line = ""
+try:
+    fileName = sys.argv[1]
+    file = open(fileName, "r")
     line = file.readline()
-file.close()
+    fileIsExist = True
+    while line:
+        vertex = str(line[0])
+        dicKeys[vertex] = indexOfRow
+        while line[fromLastIndexOfCost]:
+            try:
+                costOfEdge = int(line[fromLastIndexOfCost])
+                edgeForDic = str(line[fromFirstIndexOfEdge])
+                if edgeForDic not in dicValues:
+                    dicValues[edgeForDic] = indexOfValuesDic
+                    indexOfValuesDic += 1
+                if costOfEdge > 0:
+                    edge = str(line[fromLastIndexOfEdge])
+                    graphDFS.addEdge(indexOfRow, dicValues[edge])
+                    graphBFS.addEdge(indexOfRow, dicValues[edge])
+                    graphUCS.addEdge(indexOfRow, dicValues[edge], costOfEdge, lastU)
+            except:
+                indexOfRow += 1
+                break
+            fromLastIndexOfEdge -= 5
+            fromLastIndexOfCost -= 5
+            fromFirstIndexOfEdge += 5
+        lastU = ((fromFirstIndexOfEdge - 3) // 5) - 1 # for determine last index border
+        indexOfValuesDic = 0
+        fromLastIndexOfEdge = -5
+        fromLastIndexOfCost = -3
+        fromFirstIndexOfEdge = 3
+        line = file.readline()
+    file.close()
+except:
+    print("Please enter a graph file name in the current directory!(.\\file_name)")
+    fileIsExist = False
 
-startState = input("Please enter the start state : ")
-goalState = input("Please enter the goal state : ")
-startState = startState.upper()
-goalState = goalState.upper()
-pathOfDFS = graphDFS.DFS(dicKeys[startState])
-pathOfBFS = graphBFS.BFS(dicKeys[startState])
-pathOfUCS = graphUCS.UCS(dicKeys[startState], dicKeys[goalState])
-resultOfDFS = ""
-resultOfBFS = ""
-resultOfUCS = ""
+if fileIsExist == True:
+    startState = input("Please enter the start state : ")
+    goalState = input("Please enter the goal state : ")
+    startState = startState.upper()
+    goalState = goalState.upper()
+    pathOfDFS = graphDFS.DFS(dicKeys[startState])
+    pathOfBFS = graphBFS.BFS(dicKeys[startState])
+    pathOfUCS = graphUCS.UCS(dicKeys[startState], dicKeys[goalState])
+    resultOfDFS = ""
+    resultOfBFS = ""
+    resultOfUCS = ""
 
-for iBFS in pathOfBFS:
-    if startState == list(dicValues.keys())[list(dicValues.values()).index(iBFS)]:
-        resultOfBFS = "BFS : " + list(dicValues.keys())[list(dicValues.values()).index(iBFS)] + ' - '
-    elif goalState != list(dicValues.keys())[list(dicValues.values()).index(iBFS)]:
-        resultOfBFS += list(dicValues.keys())[list(dicValues.values()).index(iBFS)] + ' - '
-    else:
-        resultOfBFS += list(dicValues.keys())[list(dicValues.values()).index(iBFS)]
-        break
+    for iBFS in pathOfBFS:
+        if startState == list(dicValues.keys())[list(dicValues.values()).index(iBFS)]:
+            resultOfBFS = "BFS : " + list(dicValues.keys())[list(dicValues.values()).index(iBFS)] + ' - '
+        elif goalState != list(dicValues.keys())[list(dicValues.values()).index(iBFS)]:
+            resultOfBFS += list(dicValues.keys())[list(dicValues.values()).index(iBFS)] + ' - '
+        else:
+            resultOfBFS += list(dicValues.keys())[list(dicValues.values()).index(iBFS)]
+            break
 
-print(resultOfBFS)
+    print(resultOfBFS)
 
-for iDFS in pathOfDFS:
-    if startState == list(dicValues.keys())[list(dicValues.values()).index(iDFS)]:
-        resultOfDFS = "DFS : " + list(dicValues.keys())[list(dicValues.values()).index(iDFS)] + ' - '
-    elif goalState != list(dicValues.keys())[list(dicValues.values()).index(iDFS)]:
-        resultOfDFS += list(dicValues.keys())[list(dicValues.values()).index(iDFS)] + ' - '
-    else:
-        resultOfDFS += list(dicValues.keys())[list(dicValues.values()).index(iDFS)]
-        break
-print(resultOfDFS)
+    for iDFS in pathOfDFS:
+        if startState == list(dicValues.keys())[list(dicValues.values()).index(iDFS)]:
+            resultOfDFS = "DFS : " + list(dicValues.keys())[list(dicValues.values()).index(iDFS)] + ' - '
+        elif goalState != list(dicValues.keys())[list(dicValues.values()).index(iDFS)]:
+            resultOfDFS += list(dicValues.keys())[list(dicValues.values()).index(iDFS)] + ' - '
+        else:
+            resultOfDFS += list(dicValues.keys())[list(dicValues.values()).index(iDFS)]
+            break
+    print(resultOfDFS)
 
-for iUCS in pathOfUCS:
-    if startState == list(dicValues.keys())[list(dicValues.values()).index(iUCS)]:
-        resultOfUCS = "UCS : " + list(dicValues.keys())[list(dicValues.values()).index(iUCS)] + ' - '
-    elif goalState != list(dicValues.keys())[list(dicValues.values()).index(iUCS)]:
-        resultOfUCS += list(dicValues.keys())[list(dicValues.values()).index(iUCS)] + ' - '
-    else:
-        resultOfUCS += list(dicValues.keys())[list(dicValues.values()).index(iUCS)]
-        break
-print(resultOfUCS)
+    for iUCS in pathOfUCS:
+        if startState == list(dicValues.keys())[list(dicValues.values()).index(iUCS)]:
+            resultOfUCS = "UCS : " + list(dicValues.keys())[list(dicValues.values()).index(iUCS)] + ' - '
+        elif goalState != list(dicValues.keys())[list(dicValues.values()).index(iUCS)]:
+            resultOfUCS += list(dicValues.keys())[list(dicValues.values()).index(iUCS)] + ' - '
+        else:
+            resultOfUCS += list(dicValues.keys())[list(dicValues.values()).index(iUCS)]
+            break
+    print(resultOfUCS)
