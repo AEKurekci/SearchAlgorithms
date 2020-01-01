@@ -13,19 +13,6 @@ package heapandlinkedlist;
 public class LinkedList{
     Node header;
     
-    static class Node { 
-  
-        String data; 
-        Node next; 
-  
-        // Constructor 
-        Node(String d) 
-        { 
-            data = d; 
-            next = null; 
-        } 
-    } 
-    
     public static LinkedList insert(LinkedList list, String name){
         Node newNode = new Node(name);
         newNode.next = null;
@@ -48,7 +35,7 @@ public class LinkedList{
         
         System.out.print("Linked List: ");
         while(currNode != null){
-            System.err.print(currNode.data + " ");
+            System.out.print(currNode.data + " ");
             currNode = currNode.next;
         }
     }
