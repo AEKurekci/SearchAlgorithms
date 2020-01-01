@@ -27,7 +27,13 @@ public class HeapAndLinkedList {
         LinkedList list = new LinkedList();
         Heap heap = new Heap();
         int count = 0;
-        File file = new File("data.txt");
+        String theData = "data.txt";
+        
+        if(args.length != 0){
+            theData = args[0].toString();
+        }
+        
+        File file = new File(theData);
         try {
             FileReader fReader = new FileReader(file);
             BufferedReader bReader = new BufferedReader(fReader);
