@@ -15,12 +15,14 @@ public class Node {
     protected Node next;
     protected Node left;
     protected Node right;
+    protected Node parent;
     
     public Node(String name){
         this.data = name;
         this.next = null;
         this.left = null;
         this.right = null;
+        this.parent = null;
     }
     
     public void setElement(String name){
@@ -37,6 +39,14 @@ public class Node {
     
     public void setRight(Node n){
         right = n;
+    }
+    
+    public void setParent(Node n){
+        parent = n;
+    }
+    
+    public Node getParent(){
+        return parent;
     }
     
     public String getElem(){
