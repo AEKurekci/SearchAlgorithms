@@ -6,6 +6,9 @@
 
 package heapandlinkedlist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author ali19
@@ -121,12 +124,38 @@ public class Heap<E extends Comparable<E>> {
         swap(0, lastElementIndex);
         elements.remove(lastElementIndex);
         
+        int elementIndex = 0;
+        while(!isLeaf(elementIndex) && !isCorrectParent(elementIndex)){
+            int smallerChildIndex = smallerChildIndex(elementIndex);
+            swap(elementIndex, smallerChildIndex);
+            elementIndex = smallerChildIndex;
+        }
+        
         return result;
     }
 
     private boolean isEmpty() {
         return elements.size() == 0;
     }
-    
+
+    private boolean isLeaf(int index) {
+        return !isValidIndex(elements.leftChildIndex(index));
+    }
+
+    private boolean isCorrectParent(int index) {
+        return isCorrect(index, elements.leftChildIndex(index)) && isCorrect(index, elements.rightChildIndex(index));
+    }
+
+    private int smallerChildIndex(int index) {
+        int leftChildIndex = elements.leftChildIndex(index);
+        int rightChildIndex = elements.rightChildIndex(index);
+        if(!isValidIndex(rightChildIndex)){
+            return leftChildIndex;
+        }
+        if(elements.elementAt(leftChildIndex).compareTo(elements.elementAt(rightChildIndex)) < 0){
+            return leftChildIndex;
+        }
+        return rightChildIndex;
+    }
     
 }
