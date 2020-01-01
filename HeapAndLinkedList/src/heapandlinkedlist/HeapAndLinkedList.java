@@ -24,7 +24,8 @@ public class HeapAndLinkedList {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        LinkedList list = new LinkedList();;
+        LinkedList list = new LinkedList();
+        Heap heap = new Heap();
         
         File file = new File("data.txt");
         try {
@@ -33,10 +34,12 @@ public class HeapAndLinkedList {
             String line = bReader.readLine();
             while(line != null){
                 list = LinkedList.insert(list, line);
+                heap = Heap.insert(heap, line);
                 line = bReader.readLine();
             }           
             bReader.close();
             LinkedList.printList(list);
+            Heap.printHeap(heap);
         } catch (IOException ex) {
             Logger.getLogger(HeapAndLinkedList.class.getName()).log(Level.SEVERE, null, ex);
         }
