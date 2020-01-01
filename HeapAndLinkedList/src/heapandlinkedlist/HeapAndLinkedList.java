@@ -39,12 +39,30 @@ public class HeapAndLinkedList {
                 count++;
             }           
             bReader.close();
-            LinkedList.printList(list);
-            System.out.print("\nHeap: ");
-            while(count>0){
-                System.out.print(heap.pop() + " ");
-                count--;
-            }
+            long startTime = System.nanoTime();
+            heap.add("Ali");
+            long endTime = System.nanoTime();
+            long timeForAll = (endTime - startTime);
+            System.out.println("\nSpent time for Heap insertion Ali: " + timeForAll);
+            
+            startTime = System.nanoTime();
+            heap.add("Zeynep");
+            endTime = System.nanoTime();
+            timeForAll = (endTime - startTime);
+            System.out.println("Spent time for Heap insertion Zeynep: "+ timeForAll);
+            
+            long startTimeForLinkedList = System.nanoTime();
+            LinkedList.insert(list, "Ali");
+            long endTimeForLinkedList = System.nanoTime();
+            timeForAll = (endTimeForLinkedList - startTimeForLinkedList);
+            System.out.println("Spent time for LinkedList insertion Ali: " + timeForAll);
+            
+            startTimeForLinkedList = System.nanoTime();
+            LinkedList.insert(list, "Zeynep");
+            endTimeForLinkedList = System.nanoTime();
+            timeForAll = (endTimeForLinkedList - startTimeForLinkedList);
+            System.out.println("Spent time for LinkedList insertion Zeynep: " + timeForAll);
+            
             
         } catch (IOException ex) {
             Logger.getLogger(HeapAndLinkedList.class.getName()).log(Level.SEVERE, null, ex);

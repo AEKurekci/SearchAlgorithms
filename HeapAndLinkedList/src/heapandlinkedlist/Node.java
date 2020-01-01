@@ -13,16 +13,10 @@ package heapandlinkedlist;
 public class Node {
     protected String data;
     protected Node next;
-    protected Node left;
-    protected Node right;
-    protected Node parent;
     
     public Node(String name){
         this.data = name;
         this.next = null;
-        this.left = null;
-        this.right = null;
-        this.parent = null;
     }
     
     public void setElement(String name){
@@ -33,33 +27,11 @@ public class Node {
         next = n;
     }
     
-    public void setLeft(Node n){
-        left = n;
-    }
-    
-    public void setRight(Node n){
-        right = n;
-    }
-    
-    public void setParent(Node n){
-        parent = n;
-    }
-    
-    public Node getParent(){
-        return parent;
-    }
-    
     public String getElem(){
         return data;
     }
 
     public Node getNext() {
         return next;
-    }
-    public Node getLeft(){
-        return left;
-    }
-    public Node getRight(){
-        return right;
     }
 }

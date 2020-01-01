@@ -28,62 +28,6 @@ public class Heap<E extends Comparable<E>> {
     
     Node root;
     Integer index = 1;
-    
-    public static Heap insert(Heap tree, String name){
-        Node newNode = new Node(name);
-        
-        if(tree.root == null){
-            tree.root = newNode;
-            tree.index++;
-        }else{
-            int travel = 2;
-            Node last = tree.root;
-            while(travel <= tree.index){
-                if(travel % 2 == 0){
-                    if(last.left != null){
-                        travel++;
-                        last = last.left;
-                    }else{
-                        last.left = newNode;
-                        newNode.parent = last;
-                        tree.index++;
-                        travel++;
-                        break;
-                    }
-                }else{
-                    if(last.right != null){
-                        travel++;
-                        last = last.right;
-                    }else{
-                        last.right = newNode;
-                        newNode.parent = last;
-                        tree.index++;
-                        travel++;
-                        break;
-                    }
-                }
-            }
-        }
-        
-        return tree;
-    }
-    
-    public static void printHeap(Heap heap){
-        Node currNode = heap.root;
-        int counter = 1;
-        System.out.println("");
-        System.out.println(heap.index + "Heap List: ");
-        while(counter < heap.index){
-            System.out.print(currNode.data + " ");
-            counter++;
-            if (counter % 2 == 0){
-                currNode = currNode.left;
-            }else{
-                currNode = (currNode.parent).right;
-            }
-        }
-        
-    }
 
     private boolean isRoot(int i) {
         return i == 0;
