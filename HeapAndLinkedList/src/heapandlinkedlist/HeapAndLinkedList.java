@@ -26,7 +26,6 @@ public class HeapAndLinkedList {
         // TODO code application logic here
         LinkedList list = new LinkedList();
         Heap heap = new Heap();
-        int count = 0;
         String theData = "data.txt";
         
         if(args.length != 0){
@@ -37,12 +36,12 @@ public class HeapAndLinkedList {
         try {
             FileReader fReader = new FileReader(file);
             BufferedReader bReader = new BufferedReader(fReader);
+            
             String line = bReader.readLine();
             while(line != null){
                 list = LinkedList.insert(list, line);
                 heap.add(line);
                 line = bReader.readLine();
-                count++;
             }           
             bReader.close();
             long startTime = System.nanoTime();

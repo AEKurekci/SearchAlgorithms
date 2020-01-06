@@ -14,6 +14,8 @@ import java.util.List;
  * @author ali19
  */
 public class Heap<E extends Comparable<E>> {
+    Node root;
+    Integer index = 1;
     
     BinaryTree elements = new BinaryTree();
     public void add(E e){
@@ -26,9 +28,6 @@ public class Heap<E extends Comparable<E>> {
         }
     }
     
-    Node root;
-    Integer index = 1;
-
     private boolean isRoot(int i) {
         return i == 0;
     }

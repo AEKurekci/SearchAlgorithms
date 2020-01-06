@@ -9,29 +9,30 @@ package heapandlinkedlist;
 /**
  *
  * @author ali19
+ * @param <E> is any type of element(node) of LinkedList
  */
-public class Node {
-    protected String data;
-    protected Node next;
+public class Node<E> {
+    protected E data;
+    protected Node<E> next;
     
-    public Node(String name){
+    public Node(E name){
         this.data = name;
         this.next = null;
     }
     
-    public void setElement(String name){
+    public void setElement(E name){
         this.data = name;
     }
     
-    public void setNext(Node n){
+    public void setNext(Node<E> n){
         next = n;
     }
     
-    public String getElem(){
+    public E getElem(){
         return data;
     }
 
-    public Node getNext() {
+    public Node<E> getNext() {
         return next;
     }
 }
